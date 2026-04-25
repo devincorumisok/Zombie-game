@@ -83,10 +83,10 @@ select.gs{background:#111;color:#ccc;border:1px solid var(--brd);padding:4px 7px
 .slt:active{background:var(--o);color:#000;}
 .slt .sn{font-size:9px;color:#666;margin-top:2px;}
 /* MOD WINDOW */
-#mwd{position:fixed;z-index:700;background:linear-gradient(135deg,rgba(6,5,0,.97),rgba(18,7,0,.97));border:1px solid var(--g);border-radius:11px;width:min(90vw,300px);display:none;box-shadow:0 0 28px rgba(255,170,0,.18);}
+#mwd{position:fixed;z-index:750;background:linear-gradient(135deg,rgba(6,5,0,.97),rgba(18,7,0,.97));border:1px solid var(--g);border-radius:11px;width:min(90vw,300px);display:none;box-shadow:0 0 28px rgba(255,170,0,.18);pointer-events:all;touch-action:auto;}
 #mwb{background:linear-gradient(90deg,rgba(255,100,0,.18),rgba(255,170,0,.12));padding:9px 11px;border-radius:11px 11px 0 0;display:flex;align-items:center;justify-content:space-between;cursor:grab;touch-action:none;}
 #mwb h3{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--g);letter-spacing:3px;}
-.wbtn{background:rgba(255,255,255,.09);border:none;color:#fff;width:22px;height:22px;border-radius:3px;cursor:pointer;font-size:11px;display:inline-flex;align-items:center;justify-content:center;}
+.wbtn{background:rgba(255,255,255,.09);border:none;color:#fff;width:36px;height:36px;border-radius:5px;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
 #mbd{padding:10px;}
 .mi{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,100,0,.1);}
 .mi:last-child{border:none;}
@@ -96,7 +96,7 @@ select.gs{background:#111;color:#ccc;border:1px solid var(--brd);padding:4px 7px
 .ggb{background:rgba(255,100,0,.13);border:1px solid var(--brd);border-radius:4px;padding:2px 7px;font-size:9px;color:var(--g);cursor:pointer;margin:2px;display:inline-block;}
 .ggb:active{background:var(--o);color:#000;}
 /* MOD MINIMIZED - draggable */
-#mwm{position:fixed;z-index:700;background:rgba(0,0,0,.85);border:1px solid var(--g);border-radius:7px;padding:5px 10px;font-size:11px;color:var(--g);cursor:grab;display:none;font-family:'Orbitron',sans-serif;letter-spacing:2px;touch-action:none;}
+#mwm{position:fixed;z-index:750;background:rgba(0,0,0,.85);border:1px solid var(--g);border-radius:7px;padding:5px 10px;font-size:11px;color:var(--g);cursor:grab;display:none;font-family:'Orbitron',sans-serif;letter-spacing:2px;touch-action:none;pointer-events:all;}
 /* HUD */
 #hud{position:fixed;inset:0;z-index:10;pointer-events:none;}
 #trow{position:absolute;top:6px;left:0;right:0;display:flex;align-items:center;padding:0 7px;gap:5px;}
@@ -163,8 +163,10 @@ select.gs{background:#111;color:#ccc;border:1px solid var(--brd);padding:4px 7px
 #jz{position:fixed;bottom:0;left:0;width:45%;height:160px;z-index:20;}
 #jb{position:absolute;bottom:20px;left:24px;width:86px;height:86px;border-radius:50%;border:2px solid rgba(255,100,0,.36);background:rgba(0,0,0,.3);}
 #jk{position:absolute;top:50%;left:50%;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,120,0,.86),rgba(180,60,0,.65));transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 7px rgba(255,80,0,.38);}
-/* Full-screen look zone - covers whole screen, buttons intercept on top */
-#lz{position:fixed;top:0;left:0;width:100%;height:100%;z-index:8;}
+/* Look zone - covers screen EXCEPT bottom button row */
+#lz{position:fixed;top:0;left:0;width:100%;height:calc(100% - 160px);z-index:8;}
+/* Extra look zone for right side above buttons - allows aiming near fire btn */
+#lzb{position:fixed;bottom:160px;right:0;width:55%;height:80px;z-index:8;}
 /* right buttons */
 #rb{position:fixed;bottom:0;right:0;width:55%;height:160px;z-index:20;display:flex;align-items:flex-end;justify-content:flex-end;padding:9px;gap:7px;}
 .cb{background:rgba(0,0,0,.72);border:2px solid;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:#fff;font-size:7px;font-weight:700;letter-spacing:1px;gap:1px;-webkit-tap-highlight-color:transparent;}
@@ -234,6 +236,7 @@ select.gs{background:#111;color:#ccc;border:1px solid var(--brd);padding:4px 7px
 </div>
 <!-- CONTROLS -->
 <div id="lz"></div>
+<div id="lzb"></div>
 <div id="jz"><div id="jb"><div id="jk"></div></div></div>
 <div id="rb">
   <div id="grbb" class="cb" ontouchstart="doGrab();event.preventDefault();"><span class="ci">🖐</span>GRAB</div>
@@ -330,7 +333,7 @@ select.gs{background:#111;color:#ccc;border:1px solid var(--brd);padding:4px 7px
 <div id="mwd">
   <div id="mwb">
     <h3>☣ MOD MENU</h3>
-    <div><button class="wbtn" id="minB" onclick="minMod()">—</button> <button class="wbtn" onclick="closeMod()">✕</button></div>
+    <div style="display:flex;gap:4px;"><button class="wbtn" id="minB" onclick="minMod()" ontouchend="minMod();event.preventDefault();" style="pointer-events:all;">—</button><button class="wbtn" onclick="closeMod()" ontouchend="closeMod();event.preventDefault();" style="pointer-events:all;">✕</button></div>
   </div>
   <div id="mbd">
     <div class="mi"><div class="mil"><div>GOD MODE</div><div>Infinite health</div></div><div class="tog" id="mG" onclick="tgM('god','mG')"></div></div>
@@ -347,7 +350,7 @@ select.gs{background:#111;color:#ccc;border:1px solid var(--brd);padding:4px 7px
     </div>
   </div>
 </div>
-<div id="mwm" ontouchstart="startDragMin(event)" onmousedown="startDragMin(event)" onclick="maxMod()">☣ MOD ▲</div>
+<div id="mwm" ontouchstart="startDragMin(event)" ontouchend="endDragMin(event)" onmousedown="startDragMin(event)" onclick="maxMod()">☣ MOD ▲</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 'use strict';
@@ -471,8 +474,11 @@ function maxMod(){
 document.getElementById(‘mwm’).style.display=‘none’;
 showMod();
 }
-// Drag full window
+// Drag full window - detect if touch is on a button (skip drag if so)
 document.getElementById(‘mwb’).addEventListener(‘touchstart’,e=>{
+const tgt=e.target;
+// If touch starts on a button, don’t start drag - let button handle it
+if(tgt.classList.contains(‘wbtn’)||tgt.tagName===‘BUTTON’){return;}
 mdDrg=true;const t=e.touches[0],w=document.getElementById(‘mwd’);
 mdX=t.clientX-w.offsetLeft;mdY=t.clientY-w.offsetTop;e.preventDefault();
 },{passive:false});
@@ -498,15 +504,26 @@ m.style.top=Math.max(0,Math.min(innerHeight-40,e.clientY-mmY))+‘px’;}
 });
 document.addEventListener(‘mouseup’,()=>{mdDrg=false;mmDrg=false;});
 // Drag minimized
+let mmTapSX=0,mmTapSY=0;
 function startDragMin(e){
-// Only start drag if it becomes a move - use flag
 const m=document.getElementById(‘mwm’);
 if(e.touches){
-const t=e.touches[0];mmX=t.clientX-m.offsetLeft;mmY=t.clientY-m.offsetTop;
+const t=e.touches[0];
+mmTapSX=t.clientX;mmTapSY=t.clientY;
+mmX=t.clientX-m.offsetLeft;mmY=t.clientY-m.offsetTop;
 mmDrg=true;e.preventDefault();
 }else{
+mmTapSX=e.clientX;mmTapSY=e.clientY;
 mmX=e.clientX-m.offsetLeft;mmY=e.clientY-m.offsetTop;mmDrg=true;
 }
+}
+function endDragMin(e){
+if(!mmDrg)return;
+mmDrg=false;
+// If barely moved, treat as tap -> maximize
+let cx=mmTapSX,cy=mmTapSY;
+if(e.changedTouches&&e.changedTouches.length){cx=e.changedTouches[0].clientX;cy=e.changedTouches[0].clientY;}
+if(Math.abs(cx-mmTapSX)<8&&Math.abs(cy-mmTapSY)<8)maxMod();
 }
 function buildGGB(){
 const c=document.getElementById(‘ggbs’);c.innerHTML=’’;
@@ -1371,6 +1388,7 @@ const on=C.desk;
 document.getElementById(‘jz’).style.display=on?‘none’:‘block’;
 document.getElementById(‘rb’).style.display=on?‘none’:‘flex’;
 document.getElementById(‘lz’).style.pointerEvents=on?‘none’:‘auto’;
+document.getElementById(‘lzb’).style.pointerEvents=on?‘none’:‘auto’;
 document.getElementById(‘dkh’).style.display=on?‘flex’:‘none’;
 document.getElementById(‘kbsec’).style.display=on?‘block’:‘none’;
 if(on)bldDKH();
@@ -1393,11 +1411,17 @@ function rfrKeys(){Object.keys(KB).forEach(k=>{const map={fwd:‘kf_’,bwd:‘k
 
 // TOUCH
 const lz=document.getElementById(‘lz’);
+const lzb=document.getElementById(‘lzb’);
 const jb=document.getElementById(‘jb’);const jk=document.getElementById(‘jk’);const jz=document.getElementById(‘jz’);
-lz.addEventListener(‘touchstart’,e=>{e.preventDefault();for(const t of e.changedTouches){if(lTID===null){lTID=t.identifier;pLX=t.clientX;pLY=t.clientY;}}},{passive:false});
-lz.addEventListener(‘touchmove’,e=>{e.preventDefault();for(const t of e.changedTouches){if(t.identifier!==lTID)continue;const dx=t.clientX-pLX,dy=t.clientY-pLY;const s=C.sens*.003;yaw-=dx*s;const inv=C.invY?-1:1;pitch=Math.max(-.8,Math.min(.8,pitch-dy*s*inv));pLX=t.clientX;pLY=t.clientY;}},{passive:false});
-lz.addEventListener(‘touchend’,e=>{for(const t of e.changedTouches)if(t.identifier===lTID)lTID=null;},{passive:false});
-lz.addEventListener(‘touchcancel’,e=>{for(const t of e.changedTouches)if(t.identifier===lTID)lTID=null;},{passive:false});
+function lzTS(e){e.preventDefault();for(const t of e.changedTouches){if(lTID===null){lTID=t.identifier;pLX=t.clientX;pLY=t.clientY;}}}
+function lzTM(e){e.preventDefault();for(const t of e.changedTouches){if(t.identifier!==lTID)continue;const dx=t.clientX-pLX,dy=t.clientY-pLY;const s=C.sens*.003;yaw-=dx*s;const inv=C.invY?-1:1;pitch=Math.max(-.8,Math.min(.8,pitch-dy*s*inv));pLX=t.clientX;pLY=t.clientY;}}
+function lzTE(e){for(const t of e.changedTouches)if(t.identifier===lTID)lTID=null;}
+[lz,lzb].forEach(el=>{
+el.addEventListener(‘touchstart’,lzTS,{passive:false});
+el.addEventListener(‘touchmove’,lzTM,{passive:false});
+el.addEventListener(‘touchend’,lzTE,{passive:false});
+el.addEventListener(‘touchcancel’,lzTE,{passive:false});
+});
 jz.addEventListener(‘touchstart’,e=>{e.preventDefault();for(const t of e.changedTouches)if(jTID===null){jTID=t.identifier;mvJoy(t);}},{passive:false});
 jz.addEventListener(‘touchmove’,e=>{e.preventDefault();for(const t of e.changedTouches)if(t.identifier===jTID)mvJoy(t);},{passive:false});
 jz.addEventListener(‘touchend’,e=>{for(const t of e.changedTouches)if(t.identifier===jTID){jTID=null;jX=0;jY=0;jk.style.transform=‘translate(-50%,-50%)’;} },{passive:false});
