@@ -165,18 +165,18 @@ select.gs{background:#111;color:#ccc;border:1px solid var(--brd);padding:4px 7px
 /* Look zone - transparent passthrough, actual look handled by document touch listener */
 #lz{position:fixed;top:0;left:0;width:1px;height:1px;z-index:8;pointer-events:none;}
 /* right buttons - absolute layout for ergonomic cluster */
-#rb{position:fixed;bottom:0;right:0;width:55%;height:210px;z-index:20;pointer-events:none;}
+#rb{position:fixed;bottom:0;right:0;width:55%;height:185px;z-index:20;pointer-events:none;}
 .cb{background:rgba(0,0,0,.72);border:2px solid;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:absolute;color:#fff;font-size:7px;font-weight:700;letter-spacing:1px;gap:1px;-webkit-tap-highlight-color:transparent;pointer-events:all;touch-action:manipulation;}
 .cb .ci{font-size:14px;line-height:1;}
 /* Fire button — anchor, right side center */
-#fbtn{width:76px;height:76px;border-color:var(--r);background:rgba(140,0,0,.55);right:10px;bottom:62px;}
+
 /* Action buttons — left arc around fire. R=90px, angles 150-290deg */
-#kbtn{width:52px;height:52px;right:10px;bottom:119px;border-color:rgba(200,200,200,0.9);}
-#rlb2{width:48px;height:48px;right:10px;bottom:68px;border-color:var(--o);}
-#jmpb{width:48px;height:48px;right:10px;bottom:18px;border-color:var(--b);}
-#grbb{width:48px;height:48px;right:10px;bottom:-11px;border-color:var(--gr);}
-#sprb{width:48px;height:48px;right:55px;bottom:-9px;border-color:#ffcc00;}
-#sprb.on{background:rgba(255,204,0,.38);}
+
+
+
+
+
+#sprb.on{background:rgba(255,204,0,.40);}
 
 
 
@@ -185,12 +185,21 @@ select.gs{background:#111;color:#ccc;border:1px solid var(--brd);padding:4px 7px
 .kh{background:rgba(0,0,0,.7);border:1px solid #444;border-radius:3px;padding:2px 6px;font-size:9px;color:#aaa;letter-spacing:1px;}
 .kh span{color:var(--g);}
 /* landscape full screen */
-@media (orientation:landscape){
-  #jz{height:130px;}
+@media (orientation:landscape){#jz{height:130px;}#rb{height:190px;width:55%;}#hpw{bottom:190px;}#mdk{bottom:190px;}#amp{bottom:190px;}#wslots{bottom:310px;}}
   #rb{height:220px;width:62%;}
-  #fbtn{bottom:45px;right:8px;}
+  
   #hpw{bottom:190px;}#mdk{bottom:190px;}#amp{bottom:190px;}#wslots{bottom:310px;}
 }::-webkit-scrollbar-thumb{background:rgba(255,100,0,.3);border-radius:2px;}
+
+/* Fire button */
+#fbtn{width:76px;height:76px;border-color:var(--r);background:rgba(140,0,0,.55);right:10px;bottom:62px;}
+/* Action arc buttons — left of fire, R=90px */
+#kbtn{width:52px;height:52px;right:67px;bottom:152px;border-color:rgba(210,210,210,.9);}
+#rlb2{width:48px;height:48px;right:102px;bottom:121px;border-color:var(--o);}
+#jmpb{width:48px;height:48px;right:114px;bottom:76px;border-color:var(--b);}
+#grbb{width:48px;height:48px;right:102px;bottom:31px;border-color:var(--gr);}
+#sprb{width:48px;height:48px;right:69px;bottom:6px;border-color:#ffcc00;}
+#sprb.on{background:rgba(255,204,0,.40);}
 </style>
 </head>
 <body>
